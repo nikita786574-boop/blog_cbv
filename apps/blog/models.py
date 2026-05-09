@@ -33,7 +33,7 @@ class Post(models.Model):
 
     class Meta:
         db_table = 'blog_post'
-        ordering = ['-fixed', '-created']
+        ordering = ['-fixed', '-create']
         indexes = [models.Index(fields = ['-fixed', '-create', 'status'])]
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'

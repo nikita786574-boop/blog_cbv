@@ -20,7 +20,7 @@ class Post(models.Model):
     thumbnail = models.ImageField(default = 'default.jpg',
                                   verbose_name = 'Изображение записи',
                                   blank = True,
-                                  upload_to = 'images/thumbnails/',
+                                  upload_to = 'images/thumbnails/%Y/%m/%d/',
                                   validators = [FileExtensionValidator(allowed_extensions=('png', 'jpg', 'webp', 'jpeg', 'gif'))])
     status = models.CharField(choices = STATUS_OPTION, default = 'published', verbose_name='Статус Записи', max_length = 10)
     create = models.DateTimeField(auto_now_add = True, verbose_name = 'Время добавления')

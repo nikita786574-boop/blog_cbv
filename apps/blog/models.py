@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from mptt.models import MPTTModel, TreeForeignKey
 from django.urls import reverse
 
-from apps.services import unique_slugify
+from apps.services.utils import unique_slugify
 
 
 # Create your models here.

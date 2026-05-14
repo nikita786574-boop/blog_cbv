@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
 from mptt.models import MPTTModel, TreeForeignKey
+from django.urls import reverse
 
 # Create your models here.
 
@@ -39,6 +40,12 @@ class Post(models.Model):
         verbose_name_plural = 'Статьи'
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        """
+        Получение прямой ссылки на статью
+        """
+        return reverse('post_detail',kwargs={'slug':self.slug})
 
 class Category(MPTTModel):
     """

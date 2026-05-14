@@ -45,7 +45,7 @@ class Post(models.Model):
         """
         Получение прямой ссылки на статью
         """
-        return reverse('post_detail',kwargs={'slug':self.slug})
+        return reverse('blog:post_detail',kwargs={'slug':self.slug})
 
 class Category(MPTTModel):
     """

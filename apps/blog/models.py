@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from mptt.models import MPTTModel, TreeForeignKey
 from django.urls import reverse
 
+from apps.services import unique_slugify
+
+
 # Create your models here.
 
 class Post(models.Model):
@@ -13,7 +16,7 @@ class Post(models.Model):
         ('draft', 'Черновик')
     )
     title = models.CharField(verbose_name = 'Название записи', max_length = 255)
-    slug = models.SlugField(verbose_name = 'URL', max_length=255, blank = True, unique = True)
+    slug = models.SlugField(verbose_name = 'URL', max_length=255, blank = True)
     description = models.TextField(verbose_name = 'Краткое описание', max_length=500)
     text = models.TextField(verbose_name='Полный текст записи')
     category = TreeForeignKey(to='Category', on_delete=models.PROTECT, 
@@ -46,6 +49,13 @@ class Post(models.Model):
         Получение прямой ссылки на статью
         """
         return reverse('blog:post_detail',kwargs={'slug':self.slug})
+
+    def save(self, *args, **kwargs):
+        """
+        При сохранении генерируем слаг и проверяем на уникальность
+        """
+        self.slug = unique_slugify(self, self.title, self.slug)
+        super().save(*args, **kwargs)
 
 class Category(MPTTModel):
     """

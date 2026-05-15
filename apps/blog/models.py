@@ -9,6 +9,16 @@ from apps.services.utils import unique_slugify
 
 # Create your models here.
 
+class PostManager(models.Manager):
+    """
+    Кастомный менеджер для модели постов
+    """
+    def get_queryset(self):
+        """
+        Фильтруем по опубликованным
+        """
+        return super().get_queryset().filter(status='published')
+
 class Post(models.Model):
 
     STATUS_OPTION = (
@@ -34,6 +44,9 @@ class Post(models.Model):
     updater = models.ForeignKey(to = User, verbose_name='Обновил', on_delete=models.SET_NULL,
                                 related_name = 'updater_posts', blank=True, null = True)
     fixed = models.BooleanField(verbose_name = 'Прикреплено', default = False)
+
+    objects = models.Manager()
+    custom = PostManager()
 
     class Meta:
         db_table = 'blog_post'

@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
-from .models import Post
+from .models import Post, Category
 from django.views.generic import DetailView
 
 # Представление для вывода списка статей
@@ -26,4 +26,21 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.title
+        return context
+
+class PostFromCategory(ListView):
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+    category = None
+    def get_queryset(self):
+        self.category = get_object_or_404(klass = Category, slug=self.kwargs['slug'])
+        queryset = Post.objects.filter(category=self.category)
+
+        if not queryset:
+            sub_cat = Category.objects.filter(parent = self.category)
+            queryset = Post.objects.filter(category__in = sub_cat)
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Записи из категории: {self.category.title}'
         return context

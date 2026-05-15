@@ -88,5 +88,12 @@ class Category(MPTTModel):
         verbose_name_plural = 'Категории'
         db_table = 'app_categories'
     
+    def get_absolute_url(self):
+        """
+        Ссылка на категорию
+        """
+        return reverse("post_by_category", kwargs={"slug": self.slug})
+    
+
     def __str__(self):
         return self.title

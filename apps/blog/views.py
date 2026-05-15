@@ -36,6 +36,7 @@ class PostFromCategory(ListView):
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
     category = None
+    paginate_by = 1
     def get_queryset(self):
         self.category = get_object_or_404(klass = Category, slug=self.kwargs['slug'])
         queryset = Post.objects.filter(category=self.category)
@@ -47,6 +48,6 @@ class PostFromCategory(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Записи из категории: {self.category.title}'
-        page= context['page_obj']
+        page = context['page_obj']
         context['pagination_range'] = page.paginator.get_elided_page_range(page.number)
         return context

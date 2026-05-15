@@ -92,7 +92,7 @@ class Category(MPTTModel):
         """
         Ссылка на категорию
         """
-        return reverse("post_by_category", kwargs={"slug": self.slug})
+        return reverse("blog:post_by_category", kwargs={"slug": self.slug})
     
 
     def __str__(self):

@@ -10,7 +10,7 @@ class PostListView(ListView):
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
     paginate_by = 2
-
+    queryset = Post.custom.all()
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Главная страница'
@@ -25,7 +25,7 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
-    paginate_by = 2
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -39,11 +39,11 @@ class PostFromCategory(ListView):
     paginate_by = 1
     def get_queryset(self):
         self.category = get_object_or_404(klass = Category, slug=self.kwargs['slug'])
-        queryset = Post.objects.filter(category=self.category)
+        queryset = Post.custom.filter(category=self.category)
 
         if not queryset:
             sub_cat = Category.objects.filter(parent = self.category)
-            queryset = Post.objects.filter(category__in = sub_cat)
+            queryset = Post.custom.filter(category__in = sub_cat)
         return queryset
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

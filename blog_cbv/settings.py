@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'mptt',
     'django_mptt_admin',
     'debug_toolbar',
+    'apss.accounts',
 ]
 
 MIDDLEWARE = [
